@@ -56,9 +56,6 @@ func init() {
 		jwtScret:      viper.GetString("JWT_SECRET"),
 		jwtExpiresIn:  viper.GetInt("JWT_EXPIRES_IN"),
 	}
-	if err != nil {
-		panic(err)
-	}
 
 	cfg.tokenAuth = jwtauth.New("HS256", []byte(cfg.jwtScret), nil)
 }
