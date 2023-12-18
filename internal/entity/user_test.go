@@ -10,7 +10,7 @@ import (
 func TestNewUser(t *testing.T) {
 	// Arrange
 	name := "Foo Bar"
-	email := "teste@email"
+	email := "test@email"
 
 	// Act
 	user, err := NewUser(name, email, "123456")
@@ -34,20 +34,20 @@ func TestNewUser(t *testing.T) {
 }
 
 func TestUserTestify(t *testing.T) {
-	user, err := NewUser("Foo Bar", "teste@email.com", "123456")
+	user, err := NewUser("Foo Bar", "test@email.com", "123456")
 
 	assert.Nil(t, err)
 	assert.NotNil(t, user)
 	assert.NotEmpty(t, user.ID)
 	assert.NotEmpty(t, user.Password)
 	assert.Equal(t, user.Name, "Foo Bar")
-	assert.Equal(t, user.Email, "teste@email.com")
+	assert.Equal(t, user.Email, "test@email.com")
 	assert.NotEqual(t, user.Password, "123456")
 }
 
 func TestValidadePassword(t *testing.T) {
 	passwd := "123456"
-	user, err := NewUser("Foo Bar", "teste@email.com", passwd)
+	user, err := NewUser("Foo Bar", "test@email.com", passwd)
 	validatedPassword := user.ValidatePassword(passwd)
 
 	assert.Nil(t, err)
