@@ -64,5 +64,6 @@ func newInMemoryDatabase() *gorm.DB {
 		panic("failed to connect database")
 	}
 	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Product{})
 	return db
 }

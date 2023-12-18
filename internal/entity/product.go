@@ -9,12 +9,13 @@ import (
 )
 
 var (
-	ErrIdIsRequired       = errors.New("id is required")
-	ErrInvalidId          = errors.New("invalid id")
-	ErrNameIsRequired     = errors.New("name is required")
-	ErrPriceIsRequired    = errors.New("price is required")
+	ErrIdIsRequired      = errors.New("id is required")
+	ErrInvalidId         = errors.New("invalid id")
+	ErrNameIsRequired    = errors.New("name is required")
+	ErrPriceIsRequired   = errors.New("price is required")
 	ErrQuantityIsInvalid = errors.New("invalid quantity")
-	ErrInvalidPrice       = errors.New("invalid price")
+	ErrInvalidPrice      = errors.New("invalid price")
+	ErrNotFound          = errors.New("record not found")
 )
 
 type Product struct {
