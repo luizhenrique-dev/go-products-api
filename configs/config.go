@@ -1,11 +1,18 @@
 package configs
 
 import (
+	"log"
+
 	"github.com/go-chi/jwtauth"
+	"github.com/luizhenrique-dev/go-products-api/internal/entity"
 	"github.com/spf13/viper"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 var cfg *conf
+
+const WEB_SERVER_PORT = "8080"
 
 func NewConfig() *conf {
 	return cfg
@@ -58,4 +65,16 @@ func init() {
 	}
 
 	cfg.tokenAuth = jwtauth.New("HS256", []byte(cfg.jwtScret), nil)
+}
+
+func OpenDbConnection(dsn string) *gorm.DB {
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("Error connecting to PostgreSQL: " + err.Error())
+	}
+	log.Println("Connection to PostgreSQL established successfully!")
+
+	db.AutoMigrate(&entity.Product{})
+	db.AutoMigrate(&entity.User{})
+	return db
 }
