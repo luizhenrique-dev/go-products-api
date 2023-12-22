@@ -15,17 +15,20 @@ type ProductHandler struct {
 	CreateProductUC usecase.CreateProductUC
 	GetProductUC    usecase.GetProductUC
 	UpdateProductUC usecase.UpdateProductUC
+	DeleteProductUC usecase.DeleteProductUC
 }
 
 func NewProductHandler(
 	createProductUC usecase.CreateProductUC,
 	getProductUC usecase.GetProductUC,
 	updateProductUC usecase.UpdateProductUC,
+	deleteProductUC usecase.DeleteProductUC,
 ) *ProductHandler {
 	return &ProductHandler{
 		CreateProductUC: createProductUC,
 		GetProductUC:    getProductUC,
 		UpdateProductUC: updateProductUC,
+		DeleteProductUC: deleteProductUC,
 	}
 }
 
@@ -101,7 +104,30 @@ func (handler *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode("Product updated successfully!")
+}
+
+func (handler *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	if id == EMPTY_STRING {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode("id is required")
+		return
+	}
+
+	err := handler.DeleteProductUC.Execute(id)
+	if err != nil && err.Error() == usecase.ErrNotFound.Error() {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode("Product deleted successfully!")
 }

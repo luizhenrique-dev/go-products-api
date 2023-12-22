@@ -25,8 +25,8 @@ func NewGetProductUC(productRepository database.ProductRepositoryInterface) *Get
 func (uc *GetProductUC) Execute(input dto.GetProductInput) (*dto.GetProductOutput, error) {
 	product, err := uc.ProductRepository.FindById(input.ID)
 	if err != nil {
-		log.Printf("Error fetching product with id %v", product.ID)
-		return nil, err
+		log.Printf("Error fetching product with id %v", input.ID)
+		return nil, ErrNotFound
 	}
 
 	log.Printf("Product %v loaded successfully!", product.ID)

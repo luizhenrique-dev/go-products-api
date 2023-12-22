@@ -7,7 +7,7 @@ Content-Type: application/json
 }
 
 ###
-GET http:localhost:8080/products/37938ad7-7a32-4d56-9761-38f3f81c5536	 HTTP/1.1
+GET http:localhost:8080/products/dd2e69e6-30db-4c62-bee2-086bb31a7d77	 HTTP/1.1
 Content-Type: application/json
 
 ###
@@ -18,3 +18,7 @@ Content-Type: application/json
     "price": 54321.12,
     "quantity": 123
 }
+
+
+###
+DELETE http:localhost:8080/products/dd2e69e6-30db-4c62-bee2-086bb31a7d77	 HTTP/1.1

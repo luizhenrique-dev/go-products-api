@@ -19,7 +19,8 @@ func main() {
 	createProductUC := usecase.NewCreateProductUC(productRepository)
 	getProductUC := usecase.NewGetProductUC(productRepository)
 	updateProductUC := usecase.NewUpdateProductUC(productRepository)
-	productHandler := handlers.NewProductHandler(*createProductUC, *getProductUC, *updateProductUC)
+	deleteProductUC := usecase.NewDeleteProductUC(productRepository)
+	productHandler := handlers.NewProductHandler(*createProductUC, *getProductUC, *updateProductUC, *deleteProductUC)
 
 	r := chi.NewRouter()
 	// Log all requests
@@ -27,6 +28,7 @@ func main() {
 	r.Post("/products", productHandler.CreateProduct)
 	r.Get("/products/{id}", productHandler.GetProduct)
 	r.Put("/products/{id}", productHandler.UpdateProduct)
+	r.Delete("/products/{id}", productHandler.DeleteProduct)
 
 	http.ListenAndServe(":"+configs.WEB_SERVER_PORT, r)
 }
