@@ -24,6 +24,7 @@ type Product struct {
 	Price     float64   `json:"price"`
 	Quantity  int       `json:"quantity"`
 	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func NewProduct(name string, price float64, quantity int) (*Product, error) {
@@ -33,6 +34,7 @@ func NewProduct(name string, price float64, quantity int) (*Product, error) {
 		Price:     price,
 		Quantity:  quantity,
 		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	err := product.Validate()

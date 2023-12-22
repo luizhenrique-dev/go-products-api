@@ -17,7 +17,7 @@ func NewCreateProductUC(productRepository database.ProductRepositoryInterface) *
 	}
 }
 
-func (uc *CreateProductUC) Execute(input dto.CreateProductInput) (*dto.ProductOutput, error) {
+func (uc *CreateProductUC) Execute(input dto.ProductCommand) (*dto.CreateProductOutput, error) {
 	product, err := input.ToEntity()
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (uc *CreateProductUC) Execute(input dto.CreateProductInput) (*dto.ProductOu
 	}
 
 	log.Printf("Product %v created successfully!", product.ID)
-	return &dto.ProductOutput{
+	return &dto.CreateProductOutput{
 		ID: product.ID.String(),
 	}, nil
 }

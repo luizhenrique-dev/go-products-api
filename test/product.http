@@ -1,7 +1,20 @@
-POST http:localhost:8080/products
+POST http:localhost:8080/products HTTP/1.1
 Content-Type: application/json
 {
-    "name": "Product Test 3",
-    "price": 321.98,
+    "name": "Product Test 5",
+    "price": 123.45,
+    "quantity": 321
+}
+
+###
+GET http:localhost:8080/products/37938ad7-7a32-4d56-9761-38f3f81c5536	 HTTP/1.1
+Content-Type: application/json
+
+###
+PUT http:localhost:8080/products/37938ad7-7a32-4d56-9761-38f3f81c5536	 HTTP/1.1
+Content-Type: application/json
+{
+    "name": "Product Test Updated",
+    "price": 54321.12,
     "quantity": 123
 }

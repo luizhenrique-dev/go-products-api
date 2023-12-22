@@ -2,16 +2,29 @@ package dto
 
 import "github.com/luizhenrique-dev/go-products-api/internal/entity"
 
-type CreateProductInput struct {
-	Name string `json:"name"`
-	Price float64 `json:"price"`
-	Quantity int `json:"quantity"`
+
+
+type ProductCommand struct {
+	Name     string  `json:"name"`
+	Price    float64 `json:"price"`
+	Quantity int     `json:"quantity"`
 }
 
-type ProductOutput struct {
+type CreateProductOutput struct {
 	ID string `json:"id"`
 }
 
-func (input *CreateProductInput) ToEntity() (*entity.Product, error) {
-	return entity.NewProduct(input.Name, input.Price, input.Quantity)
+func (command *ProductCommand) ToEntity() (*entity.Product, error) {
+	return entity.NewProduct(command.Name, command.Price, command.Quantity)
+}
+
+type GetProductInput struct {
+	ID string `json:"id"`
+}
+
+type GetProductOutput struct {
+	ID       string  `json:"id"`
+	Name     string  `json:"name"`
+	Price    float64 `json:"price"`
+	Quantity int     `json:"quantity"`
 }
