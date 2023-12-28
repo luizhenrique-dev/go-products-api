@@ -37,3 +37,27 @@ func (uc *GetProductUC) Execute(input dto.GetProductInput) (*dto.GetProductOutpu
 		Quantity: product.Quantity,
 	}, nil
 }
+
+func (uc *GetProductUC) FindAll(page, limit int, sort string) ([]dto.GetProductOutput, error) {
+	log.Print("Fetching products: ", page, limit, sort)
+
+	products, err := uc.ProductRepository.FindAll(page, limit, sort)
+	if err != nil {
+		log.Printf("Error fetching products")
+		return nil, err
+	}
+
+	var productsOutput []dto.GetProductOutput
+	for _, product := range products {
+		productsOutput = append(productsOutput, dto.GetProductOutput{
+			ID:        product.ID.String(),
+			Name:      product.Name,
+			Price:     product.Price,
+			Quantity:  product.Quantity,
+			CreatedAt: product.CreatedAt,
+			UpdatedAt: product.UpdatedAt,
+		})
+	}
+
+	return productsOutput, nil
+}

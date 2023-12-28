@@ -22,3 +22,12 @@ Content-Type: application/json
 
 ###
 DELETE http:localhost:8080/products/dd2e69e6-30db-4c62-bee2-086bb31a7d77	 HTTP/1.1
+
+
+###
+
+GET http:localhost:8080/products HTTP/1.1
+
+###
+
+GET http:localhost:8080/products?page=1&limit=3 HTTP/1.1
