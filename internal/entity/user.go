@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"time"
+
 	"github.com/luizhenrique-dev/go-products-api/pkg/entity"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -10,6 +12,8 @@ type User struct {
 	Name     string    `json:"name"`
 	Email    string    `json:"email"`
 	Password string    `json:"-"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func NewUser(name, email, password string) (*User, error) {
@@ -23,6 +27,8 @@ func NewUser(name, email, password string) (*User, error) {
 		Name:     name,
 		Email:    email,
 		Password: string(hashedPassword),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}, nil
 }
 

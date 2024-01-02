@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/luizhenrique-dev/go-products-api/internal/dto"
-	"github.com/luizhenrique-dev/go-products-api/internal/usecase"
+	usecase "github.com/luizhenrique-dev/go-products-api/internal/usecase/product"
 )
 
 const EMPTY_STRING = ""

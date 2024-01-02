@@ -33,3 +33,13 @@ type GetProductOutput struct {
 	UpdatedAt time.Time `json:"updated_at"`
 
 }
+
+type UserCommand struct {
+	Name     string    `json:"name"`
+	Email    string    `json:"email"`
+	Password string    `json:"password"`
+}
+
+func (command *UserCommand) ToEntity() (*entity.User, error) {
+	return entity.NewUser(command.Name, command.Email, command.Password)
+}
