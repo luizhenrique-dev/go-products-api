@@ -10,11 +10,15 @@ import (
 	"github.com/luizhenrique-dev/go-products-api/infra/webserver/handlers"
 	productUsecase "github.com/luizhenrique-dev/go-products-api/internal/usecase/product"
 	userUsecase "github.com/luizhenrique-dev/go-products-api/internal/usecase/user"
+	"github.com/luizhenrique-dev/go-products-api/pkg/security"
 )
 
 func main() {
 	config := configs.NewConfig()
 	db := configs.OpenDbConnection(config.GetDBConnectionString())
+
+	// General
+	jwtHelper := security.NewJwtHelper(config.GetTokenAuth(), config.GetJwtExpiresIn())
 
 	// Product usecases
 	productRepository := database.NewProductRepository(db)
@@ -26,10 +30,11 @@ func main() {
 	// User usecases
 	userRepository := database.NewUserRepository(db)
 	createUserUC := userUsecase.NewCreateUserUC(userRepository)
+	getUserUC := userUsecase.NewGetUserUC(userRepository)
 
 	// Handlers
 	productHandler := handlers.NewProductHandler(*createProductUC, *getProductUC, *updateProductUC, *deleteProductUC)
-	userHandler := handlers.NewUserHandler(*createUserUC)
+	userHandler := handlers.NewUserHandler(*createUserUC, *getUserUC, *jwtHelper)
 
 	r := chi.NewRouter()
 	// Log all requests
@@ -44,6 +49,7 @@ func main() {
 
 	// User routes
 	r.Post("/users", userHandler.CreateUser)
+	r.Post("/users/generate_token", userHandler.GetJwt)
 
 	http.ListenAndServe(":"+configs.WEB_SERVER_PORT, r)
 }

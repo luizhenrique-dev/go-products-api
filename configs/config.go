@@ -40,6 +40,14 @@ func (c *conf) GetDBConnectionString() string {
 		" sslmode=disable TimeZone=America/Sao_Paulo"
 }
 
+func (c *conf) GetTokenAuth() *jwtauth.JWTAuth {
+	return c.tokenAuth
+}
+
+func (c *conf) GetJwtExpiresIn() int {
+	return c.jwtExpiresIn
+}
+
 func init() {
 	viper.SetConfigName("app_config")
 	viper.SetConfigType("env")
