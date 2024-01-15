@@ -41,15 +41,13 @@ func (handler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var inputUser dto.UserCommand
 	err := json.NewDecoder(r.Body).Decode(&inputUser)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		returnJsonError(err, w, "")
+		returnJsonError(err, w, "", http.StatusBadRequest)
 		return
 	}
 
 	err = handler.CreateUserUC.Execute(inputUser)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		returnJsonError(err, w, "")
+		returnJsonError(err, w, "", http.StatusInternalServerError)
 		return
 	}
 
@@ -72,34 +70,29 @@ func (handler *UserHandler) GetJwt(w http.ResponseWriter, r *http.Request) {
 	var inputJwt security.GetJwtInput
 	err := json.NewDecoder(r.Body).Decode(&inputJwt)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		returnJsonError(err, w, "")
+		returnJsonError(err, w, "", http.StatusBadRequest)
 		return
 	}
 
 	user, err := handler.GetUserUC.FindByEmail(inputJwt.Email)
-	if err != nil && err != usecase.ErrUserNotFound {
-		w.WriteHeader(http.StatusNotFound)
-		returnJsonError(err, w, "Invalid credentials")
+	if err != nil && err == usecase.ErrUserNotFound {
+		returnJsonError(err, w, "Invalid credentials", http.StatusNotFound)
 		return
 	}
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		returnJsonError(err, w, "")
+		returnJsonError(err, w, "", http.StatusInternalServerError)
 		return
 	}
 
 	if !user.ValidatePassword(inputJwt.Password) {
-		w.WriteHeader(http.StatusUnauthorized)
-		returnJsonError(err, w, "Invalid credentials")
+		returnJsonError(err, w, "Invalid credentials", http.StatusUnauthorized)
 		return
 	}
 
 	token, err := handler.JwtHelper.GenerateJwt(user.ID.String())
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		returnJsonError(err, w, "")
+		returnJsonError(err, w, "", http.StatusInternalServerError)
 		return
 	}
  
@@ -109,7 +102,7 @@ func (handler *UserHandler) GetJwt(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(accessToken)
 }
 
-func returnJsonError(err error, w http.ResponseWriter, errorMessage string) {
+func returnJsonError(err error, w http.ResponseWriter, errorMessage string, status int) {
 	var errorResponseMessage string
 	if errorMessage != "" {
 		errorResponseMessage = errorMessage
@@ -117,5 +110,6 @@ func returnJsonError(err error, w http.ResponseWriter, errorMessage string) {
 		errorResponseMessage = err.Error()
 	}
 	errResponse := ErrorResponse{Message: errorResponseMessage}
+	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(errResponse)
 }
