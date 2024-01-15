@@ -12,8 +12,29 @@ import (
 	productUsecase "github.com/luizhenrique-dev/go-products-api/internal/usecase/product"
 	userUsecase "github.com/luizhenrique-dev/go-products-api/internal/usecase/user"
 	"github.com/luizhenrique-dev/go-products-api/pkg/security"
+
+	httpSwagger "github.com/swaggo/http-swagger"
+	_ "github.com/luizhenrique-dev/go-products-api/docs"
 )
 
+// @title           Go Products API
+// @version         1.0
+// @description     Product API with autentication.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   Luiz Henrique
+// @contact.url    https://github.com/luizhenrique-dev
+// @contact.email  luizhenrique321@gmail.com
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8080
+// @BasePath  /
+
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	config := configs.NewConfig()
 	db := configs.OpenDbConnection(config.GetDBConnectionString())
@@ -59,6 +80,8 @@ func main() {
 	// User routes
 	r.Post("/users", userHandler.CreateUser)
 	r.Post("/users/generate_token", userHandler.GetJwt)
+
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/docs/doc.json")))
 
 	http.ListenAndServe(":"+configs.WEB_SERVER_PORT, r)
 }

@@ -50,3 +50,7 @@ type GetUserOutput struct {
 func (command *UserCommand) ToEntity() (*entity.User, error) {
 	return entity.NewUser(command.Name, command.Email, command.Password)
 }
+
+type GetJwtOutput struct {
+	AccessToken string `json:"access_token"`
+}
