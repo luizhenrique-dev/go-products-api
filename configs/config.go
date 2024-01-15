@@ -12,7 +12,7 @@ import (
 
 var cfg *conf
 
-const WEB_SERVER_PORT = "8080"
+const DEFAULT_WEB_SERVER_PORT = "8080"
 
 func NewConfig() *conf {
 	return cfg
@@ -42,6 +42,13 @@ func (c *conf) GetDBConnectionString() string {
 
 func (c *conf) GetTokenAuth() *jwtauth.JWTAuth {
 	return c.tokenAuth
+}
+
+func (c *conf) GetWebServerPort() string {
+	if c.webServerPort == "" {
+		return DEFAULT_WEB_SERVER_PORT
+	}
+	return c.webServerPort
 }
 
 func (c *conf) GetJwtExpiresIn() int {

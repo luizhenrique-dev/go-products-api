@@ -13,8 +13,8 @@ import (
 	userUsecase "github.com/luizhenrique-dev/go-products-api/internal/usecase/user"
 	"github.com/luizhenrique-dev/go-products-api/pkg/security"
 
-	httpSwagger "github.com/swaggo/http-swagger"
 	_ "github.com/luizhenrique-dev/go-products-api/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 // @title           Go Products API
@@ -81,7 +81,7 @@ func main() {
 	r.Post("/users", userHandler.CreateUser)
 	r.Post("/users/generate_token", userHandler.GetJwt)
 
-	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/docs/doc.json")))
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:"+config.GetWebServerPort()+"/docs/doc.json")))
 
-	http.ListenAndServe(":"+configs.WEB_SERVER_PORT, r)
+	http.ListenAndServe(":"+config.GetWebServerPort(), r)
 }
