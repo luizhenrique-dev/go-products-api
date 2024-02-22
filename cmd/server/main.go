@@ -44,7 +44,8 @@ func main() {
 
 	// Product usecases
 	productRepository := database.NewProductRepository(db)
-	createProductUC := productUsecase.NewCreateProductUC(productRepository)
+	createProductUC := NewCreateProductUseCase(db)
+
 	getProductUC := productUsecase.NewGetProductUC(productRepository)
 	updateProductUC := productUsecase.NewUpdateProductUC(productRepository)
 	deleteProductUC := productUsecase.NewDeleteProductUC(productRepository)

@@ -58,8 +58,8 @@ func (c *conf) GetJwtExpiresIn() int {
 func init() {
 	viper.SetConfigName("app_config")
 	viper.SetConfigType("env")
-	viper.AddConfigPath(".")
-	viper.SetConfigFile("cmd/server/.env")
+	viper.AddConfigPath("cmd/server/")
+	viper.SetConfigFile(".env")
 	viper.AutomaticEnv()
 
 	err := viper.ReadInConfig()
